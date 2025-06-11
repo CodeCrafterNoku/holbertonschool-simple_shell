@@ -42,7 +42,7 @@ int _execute_command(char *input_line)
 		/* Attempt to execute the command with full argv array. */
 		if (execve(argv[0], argv, environ) == -1)
 		{
-			/* Error message: "./shell: No such file or directory" */
+			/* Error message */
 			perror("./shell");
 			_exit(EXIT_FAILURE); /* Exit child process on execve failure */
 		}

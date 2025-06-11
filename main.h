@@ -1,12 +1,12 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-#include <stdio.h>    /* For printf, perror, getline, stdin, feof */
+#include <stdio.h>    /* For printf, perror, getline, stdin */
 #include <stdlib.h>   /* For EXIT_SUCCESS, EXIT_FAILURE, malloc, free */
-#include <unistd.h>   /* For execve, fork, wait, _exit, fflush */
+#include <unistd.h>   /* For execve, fork, wait, _exit, fflush, isatty */
 #include <sys/types.h>/* For pid_t */
 #include <sys/wait.h> /* For waitpid */
-#include <string.h>   /* For strcmp, strcspn, strlen, strtok */ /* strtok is here */
+#include <string.h>   /* For strcmp, strcspn, strlen, strtok */
 #include <signal.h>   /* For signal, SIGINT */
 
 /* Global environment variable, declared extern here */

@@ -46,8 +46,8 @@ int main(void)
 		read_bytes = _read_command_line(&line, &len);
 		if (read_bytes == -1)
 		{
-			/* For EOF, exit with the last command's status */
-			break; /* Exit shell loop on EOF or getline error */
+			/* On EOF or getline error, exit with last known status or 0 if none */
+			break; /* Exit shell loop */
 		}
 
 		/* Remove trailing newline character from the input */
@@ -62,17 +62,11 @@ int main(void)
 		/* If _execute_command returned SHELL_EXIT_CODE, then exit */
 		if (last_command_status == SHELL_EXIT_CODE)
 		{
+			last_command_status = EXIT_SUCCESS; /* Set to 0 for successful exit built-in */
 			break; /* Exit loop to free line and terminate */
 		}
 	}
 
 	free(line); /* Free the dynamically allocated buffer by getline */
-	/* If exiting due to 'exit' built-in, last_command_status will be SHELL_EXIT_CODE.
-	 * In that case, return EXIT_SUCCESS as per built-in.
-	 * Otherwise, return the actual last command status. */
-	if (last_command_status == SHELL_EXIT_CODE)
-	{
-		return (EXIT_SUCCESS);
-	}
-	return (last_command_status);
+	return (last_command_status); /* Return the last command's status or EXIT_SUCCESS for built-in */
 }

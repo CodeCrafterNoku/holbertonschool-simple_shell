@@ -10,6 +10,8 @@
  * Return: The exit status of the command. Returns 127 if command not found.
  * Returns -1 for internal shell errors (fork/waitpid failure).
  * Returns SHELL_EXIT_CODE if 'exit' built-in is called.
+ * Returns 1 if child process did not exit normally (e.g., killed by signal).
+ * Returns 0 for empty commands.
  */
 int _execute_command(char *input_line)
 {
@@ -18,7 +20,7 @@ int _execute_command(char *input_line)
 	char *token;
 	int i = 0;
 	char *command_full_path = NULL;
-	int status = 0;
+	int status; /* Not initialized, will be set by waitpid */
 
 	/* Get the first token (command) */
 	token = strtok(input_line, " \t\n");
@@ -57,33 +59,33 @@ int _execute_command(char *input_line)
 	if (pid == -1)
 	{
 		perror("Error: fork failed");
-		free(command_full_path);
-		return (-1);
+		free(command_full_path); /* Free path before returning */
+		return (-1); /* Shell internal error */
 	}
 	else if (pid == 0) /* Child process executes the command */
 	{
 		if (execve(command_full_path, argv, environ) == -1)
 		{
 			perror("./hsh");
-			free(command_full_path);
-			_exit(127);
+			free(command_full_path); /* Free path before exiting child */
+			_exit(127); /* Child exits with 127 for execve failure */
 		}
 	}
 	else /* Parent process waits for the child */
 	{
-		free(command_full_path);
+		free(command_full_path); /* Free path in parent after fork */
 		if (waitpid(pid, &status, 0) == -1)
 		{
 			perror("Error: waitpid failed");
-			return (-1);
+			return (-1); /* Shell internal error */
 		}
+		/* Propagate child's exit status */
 		if (WIFEXITED(status))
 		{
-			return (WEXITSTATUS(status)); /* This is what we need to return */
+			return (WEXITSTATUS(status));
 		}
-		/* If child did not exit normally (e.g., killed by signal),
-		 * checker might expect a non-zero exit code here or a specific
-		 * signal status, but for now, 0 is the default. */
+		/* If child was terminated by a signal (WIFSIGNALED) or stopped (WIFSTOPPED) */
+		return (1); /* General failure for non-normal exit */
 	}
-	return (0); /* Default for parent if child didn't exit normally */
+	return (0); /* Should ideally not be reached, but as a fallback */
 }

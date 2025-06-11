@@ -23,8 +23,8 @@ void handle_sigint(int sig)
  * This function implements the main loop of the shell, handling prompt
  * display, command input, execution, and basic error conditions.
  *
- * Return: The exit status of the last executed command,
- * or EXIT_SUCCESS on EOF, or EXIT_FAILURE on critical error.
+ * Return: The exit status of the shell, based on the last command executed
+ * or specific built-in actions.
  */
 int main(void)
 {
@@ -62,11 +62,11 @@ int main(void)
 		/* If _execute_command returned SHELL_EXIT_CODE, then exit */
 		if (last_command_status == SHELL_EXIT_CODE)
 		{
-			last_command_status = EXIT_SUCCESS; /* Set to 0 for successful exit built-in */
+			last_command_status = EXIT_SUCCESS; /* For 'exit' built-in, return 0 status */
 			break; /* Exit loop to free line and terminate */
 		}
 	}
 
 	free(line); /* Free the dynamically allocated buffer by getline */
-	return (last_command_status); /* Return the last command's status or EXIT_SUCCESS for built-in */
+	return (last_command_status); /* Return the stored status as shell's exit status */
 }

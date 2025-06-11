@@ -1,5 +1,7 @@
 #include "main.h"
 
+#define SHELL_EXIT_CODE 999 /* Special code for 'exit' built-in */
+
 /**
  * handle_sigint - Signal handler for SIGINT (Ctrl+C).
  * @sig: The signal number.
@@ -56,9 +58,21 @@ int main(void)
 
 		/* Execute the command and store its exit status */
 		last_command_status = _execute_command(line);
+
+		/* If _execute_command returned SHELL_EXIT_CODE, then exit */
+		if (last_command_status == SHELL_EXIT_CODE)
+		{
+			break; /* Exit loop to free line and terminate */
+		}
 	}
 
 	free(line); /* Free the dynamically allocated buffer by getline */
-	/* Return the status of the last command executed or 0 for successful EOF */
+	/* If exiting due to 'exit' built-in, last_command_status will be SHELL_EXIT_CODE.
+	 * In that case, return EXIT_SUCCESS as per built-in.
+	 * Otherwise, return the actual last command status. */
+	if (last_command_status == SHELL_EXIT_CODE)
+	{
+		return (EXIT_SUCCESS);
+	}
 	return (last_command_status);
 }

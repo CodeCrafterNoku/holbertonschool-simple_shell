@@ -1,14 +1,15 @@
 #include "main.h"
 
 #define MAX_ARGS 64 /* Maximum number of arguments + command + NULL */
+#define SHELL_EXIT_CODE 999 /* Special code for 'exit' built-in */
 
 /**
  * _execute_command - Executes a command with arguments or handles built-ins.
  * @input_line: The complete command line string from user input.
  *
- * Return: The exit status of the command, or 127 if command not found.
+ * Return: The exit status of the command. Returns 127 if command not found.
  * Returns -1 for internal shell errors (fork/waitpid failure).
- * Exits the shell if 'exit' built-in is called.
+ * Returns SHELL_EXIT_CODE if 'exit' built-in is called.
  */
 int _execute_command(char *input_line)
 {
@@ -38,10 +39,9 @@ int _execute_command(char *input_line)
 	/* --- Handle Built-in Commands --- */
 	if (strcmp(argv[0], "exit") == 0)
 	{
-		exit(EXIT_SUCCESS); /* Exit the shell */
+		return (SHELL_EXIT_CODE); /* Return special code for 'exit' */
 	}
 	/* --- End Built-in Commands --- */
-
 
 	/* Attempt to find the command's full path */
 	command_full_path = _find_command_in_path(argv[0]);
@@ -82,5 +82,5 @@ int _execute_command(char *input_line)
 			return (WEXITSTATUS(status));
 		}
 	}
-	return (0);
+	return (0); /* Default return for parent if child didn't exit normally */
 }

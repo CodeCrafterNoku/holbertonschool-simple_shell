@@ -14,6 +14,7 @@ extern char **environ;
 
 /* Prototypes */
 void handle_sigint(int sig);
+/* _execute_command now returns a special code for 'exit' built-in */
 int _execute_command(char *command);
 /**
  * _read_command_line - Reads a line from stdin and handles EOF/errors.

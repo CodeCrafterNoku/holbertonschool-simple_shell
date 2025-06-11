@@ -52,12 +52,6 @@ int main(void)
 			line[read_bytes - 1] = '\0';
 		}
 
-		/*
-		 * The tokenization and handling of empty lines/spaces-only lines
-		 * is now handled inside _execute_command.
-		 * So, removed: if (strlen(line) == 0) continue;
-		 */
-
 		/* Execute the command */
 		_execute_command(line);
 	}

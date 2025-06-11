@@ -6,7 +6,7 @@
 #include <unistd.h>   /* For execve, fork, wait, _exit, fflush */
 #include <sys/types.h>/* For pid_t */
 #include <sys/wait.h> /* For waitpid */
-#include <string.h>   /* For strcmp, strcspn, strlen, strtok */ /* Added strtok */
+#include <string.h>   /* For strcmp, strcspn, strlen, strtok */ /* strtok is here */
 #include <signal.h>   /* For signal, SIGINT */
 
 /* Global environment variable, declared extern here */

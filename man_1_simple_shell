@@ -1,0 +1,10 @@
+.TH Man page for a simple shell project
+
+.SH NAME shell
+
+.SH SYNOPSIS
+
+.SH DESCRITION
+
+.PP
+take commands from a user and execute them in the system

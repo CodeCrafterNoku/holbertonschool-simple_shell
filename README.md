@@ -1,21 +1,14 @@
 # Simple Shell Project
 
-This project implements a basic UNIX command line interpreter, or shell. It's a foundational step in understanding how operating systems and shell environments work.
+## Description
+A simple UNIX command line interpreter that:
+- Displays a prompt and waits for user input
+- Executes simple commands
+- Handles command not found errors
+- Implements basic built-ins (env, exit)
 
-## Features
+## Compilation
+gcc -Wall -Werror -Wextra -pedantic -std=gnu89 *.c -o hsh
 
--   **Command Execution**: Executes commands with arguments.
--   **Path Handling**: Searches for executables in the system's PATH.
--   **Built-in Commands**: (Future: Implement simple built-ins like `exit`, `env`).
--   **Error Handling**: Basic error messages for invalid commands or permissions.
-
-## How to Compile and Run
-
-To compile the shell:
-```bash
-gcc -Wall -Wextra -Werror -pedantic -std=gnu89 *.c -o hsh
+## Usage
 ./hsh
-<span class="math-inline">\./hsh</span> # Type your commands here, e.g., ls -l /tmp
-$ exit
-bash
-exit
